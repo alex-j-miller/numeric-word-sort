@@ -5,6 +5,7 @@ import Textarea from '@mui/joy/Textarea';
 import Typography from '@mui/joy/Typography';
 import Button from '@mui/joy/Button';
 import { submitNumbers } from '../api/numbers';
+import Over9000Image from './Over9000Image';
 
 export default function NumberInputCard(props) {
   const [textValue, setTextValue] = useState('');
@@ -15,9 +16,6 @@ export default function NumberInputCard(props) {
   function validateNumbers(numbers) {
     if (numbers.some(n => !Number.isInteger(n))) {
       return { isValid: false, error: 'All numbers must be integers.' };
-    }
-    if (numbers.some(n => n > 9000 || n < -9000)) {
-      return { isValid: false, error: 'All numbers must be between -9000 and 9000.' };
     }
     return { isValid: true, error: '' };
   }
@@ -107,13 +105,17 @@ export default function NumberInputCard(props) {
       const sorted = sortByAlpha(result.result);
       return (
         <Card variant="soft" size="lg" sx={{ mt: 4, minWidth: 350, maxWidth: 500 }}>
-          <CardContent>
-            <Typography level="h4" sx={{ mb: 2 }}>
+          <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <Typography level="h4" sx={{ mb: 2, textAlign: 'center' }}>
               Results
             </Typography>
             {sorted.map((item, idx) => (
-              <Typography key={idx} sx={{ mb: 1 }}>
-                <b>{item.number}:</b> {item.alpha}
+              <Typography key={idx} sx={{ mb: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, width: '100%', textAlign: 'center' }}>
+                {item.number > 9000 ? (
+                  <Over9000Image alt={item.alpha} />
+                ) : (
+                  <span style={{ fontSize: 20 }}>{item.alpha}</span>
+                )}
               </Typography>
             ))}
           </CardContent>
@@ -151,7 +153,7 @@ export default function NumberInputCard(props) {
               onChange={handleChange}
             />
             <Button type="submit" sx={{ mt: 2 }} disabled={isSubmitDisabled()}>
-              Submit
+              Sort Text
             </Button>
           </form>
           {renderError()}

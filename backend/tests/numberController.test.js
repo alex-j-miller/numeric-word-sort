@@ -23,12 +23,7 @@ describe('numericsToAlpha', () => {
     ]);
   });
 
-  it('should handle numbers out of range gracefully', () => {
-    expect(numericsToAlpha([9001, -9001])).toEqual([
-      { number: 9001, alpha: 'Nine Thousand One' },
-      { number: -9001, alpha: 'Negative Nine Thousand One' }
-    ]);
-  });
+  // Removed obsolete out-of-range test (9000 limit no longer applies)
 
   it('should return an empty array for empty input', () => {
     expect(numericsToAlpha([])).toEqual([]);
@@ -40,6 +35,45 @@ describe('numericsToAlpha', () => {
       { number: 7, alpha: 'Seven' },
       { number: 7, alpha: 'Seven' },
       { number: 7, alpha: 'Seven' }
+    ]);
+  });
+  it('should handle millions, billions, and trillions', () => {
+    expect(numericsToAlpha([
+      1000000,
+      250000000,
+      1000000000,
+      1000000000000,
+      1234567890
+    ])).toEqual([
+      { number: 1000000, alpha: 'One Million' },
+      { number: 250000000, alpha: 'Two Hundred Fifty Million' },
+      { number: 1000000000, alpha: 'One Billion' },
+      { number: 1000000000000, alpha: 'One Trillion' },
+      { number: 1234567890, alpha: 'One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Thousand Eight Hundred Ninety' }
+    ]);
+  });
+
+  it('should handle negative large numbers', () => {
+    expect(numericsToAlpha([
+      -1000000,
+      -1000000000,
+      -1000000000000
+    ])).toEqual([
+      { number: -1000000, alpha: 'Negative One Million' },
+      { number: -1000000000, alpha: 'Negative One Billion' },
+      { number: -1000000000000, alpha: 'Negative One Trillion' }
+    ]);
+  });
+
+  it('should handle edge cases with mixed scales', () => {
+    expect(numericsToAlpha([
+      1000001,
+      1001000,
+      1000000001
+    ])).toEqual([
+      { number: 1000001, alpha: 'One Million One' },
+      { number: 1001000, alpha: 'One Million One Thousand' },
+      { number: 1000000001, alpha: 'One Billion One' }
     ]);
   });
 });

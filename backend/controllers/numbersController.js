@@ -10,9 +10,6 @@ exports.postNumbers = (req, res) => {
     if (numbers.some(num => !Number.isInteger(num))) {
         return res.status(400).json({ error: 'All numbers must be integers.' });
     }
-    if (numbers.some(num => num > 9000 || num < -9000)) {
-        return res.status(400).json({ error: 'All numbers must be between -9000 and 9000.' });
-    }
 
     const result = numericsToAlpha(numbers);
     res.json({ result });

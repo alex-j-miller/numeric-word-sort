@@ -24,13 +24,6 @@ describe('POST /numbers', () => {
         expect(res.body.error).toMatch(/integers/);
     });
 
-    it('should return 400 for numbers out of range', async () => {
-        const res = await request(app)
-            .post('/numbers')
-            .send({ numbers: [9001, -9001] });
-        expect(res.statusCode).toBe(400);
-        expect(res.body.error).toMatch(/between -9000 and 9000/);
-    });
 
     it('should return 400 for missing or invalid numbers field', async () => {
         const res = await request(app)
@@ -64,7 +57,6 @@ describe('POST /numbers', () => {
         expect(res.statusCode).toBe(200);
         expect(Array.isArray(res.body.result)).toBe(true);
         expect(res.body.result.length).toBe(5000);
-        // spot check a few
         expect(res.body.result[0]).toHaveProperty('number', -2500);
         expect(res.body.result[0]).toHaveProperty('alpha');
         expect(res.body.result[4999]).toHaveProperty('number', 2499);
@@ -75,7 +67,6 @@ describe('POST /numbers', () => {
             .post('/numbers')
             .send({ numbers: [-0, 0] });
         expect(res.statusCode).toBe(200);
-        // JS treats -0 and 0 as equal, but let's check both are present
         expect(res.body.result.length).toBe(2);
         expect(res.body.result[0]).toEqual({ number: 0, alpha: 'Zero' });
         expect(res.body.result[1]).toEqual({ number: 0, alpha: 'Zero' });
