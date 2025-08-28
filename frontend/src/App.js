@@ -1,12 +1,16 @@
 import './App.css';
 import '@fontsource/inter';
-import InputCard from './components/InputCard';
+import NumberInputCard from './components/NumberInputCard';
+import Typography from '@mui/joy/Typography';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <InputCard />
+        <Typography level="h1" sx={{ mb: 4 }}>
+          Numbers to Words Converter
+        </Typography>
+        <NumberInputCard />
       </header>
     </div>
   );
